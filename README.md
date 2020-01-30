@@ -1,2 +1,7 @@
-# Servidor RESTful con NODEJS
-recuerda instalar los paquetes con npm install
+# Servidor RESTful con NodeJS
+
+Recuerda instalar los paquetes
+
+```
+npm install
+```

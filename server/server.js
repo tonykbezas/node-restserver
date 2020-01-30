@@ -1,43 +1,31 @@
 const express = require('express');
+
+
 const app = express();
 const bodyParser = require('body-parser');
 require('./config/config')
-    // parse application/x-www-form-urlencoded
+
+
+
+const mongoose = require('mongoose');
+
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/usuario', function(req, res) {
-    res.json("get Mundo!");
-});
 
-app.post('/usuario', function(req, res) {
-    let body = req.body;
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: "el nombre es necesario"
-        });
-    } else {
-        res.json({
-            usuario: body
-        });
-    }
+app.use(require('./routes/usuario'));
 
-});
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
+    (err, res) => {
 
-app.put('/usuario/:id', function(req, res) {
-    let id = req.params.id
-    res.json({
-        cedula: id
+        if (err) throw err;
+
+        console.log('Base de datos ONLINE!');
     });
-});
-
-app.delete('/usuario', function(req, res) {
-    res.json("delete Mundo!");
-});
 
 app.listen(process.env.PORT, () => {
-    console.log("Escuchando en el puerto ", process.env.PORT)
-})
+    console.log("Escuchando en el puerto", process.env.PORT);
+});
